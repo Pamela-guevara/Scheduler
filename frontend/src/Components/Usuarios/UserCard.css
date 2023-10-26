@@ -1,0 +1,15 @@
+.card-body {
+  background-color: aliceblue;
+}
+.card-title {
+  color: #ff33ab;
+}
+.card-text {
+  color: rgb(237, 109, 131);
+}
+.card-subtitle {
+  color: black;
+}
+.card-text {
+  color: grey;
+}
