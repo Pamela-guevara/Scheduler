@@ -53,26 +53,31 @@ class Entrenado(db.Model):
 
 class Sesiones(db.Model):
     __tablename__ = "Sesiones"
-    id = db.Column(db.Integer, primary_key=True)
+    Id = db.Column(db.Integer, primary_key=True)
 
     # Clave foranea
     entrenado_id = db.Column(db.Integer, db.ForeignKey(
         'Entrenado.id', ondelete="CASCADE", onupdate="CASCADE"), nullable=False)
-
-    inicio = db.Column(db.DateTime, nullable=False)
-    fin = db.Column(db.DateTime, nullable=False)
-    comentario = db.Column(db.String(255), nullable=True)
+    Subject = db.Column(db.String(255), nullable=False)
+    StartTime = db.Column(db.DateTime, nullable=False)
+    EndTime = db.Column(db.DateTime, nullable=False)
+    Description = db.Column(db.String(255), nullable=True)
+    RecurrenceRule = db.Column(db.String(255), nullable=True)
 
     # Relación- Tabla, back-populates -> atributo que lo relaciona en la otra tabla
     # uselist -> Falso para que no arme una lista con ella pues es solo un elemento
     entrenado = db.relationship(
         "Entrenado", back_populates="sesiones", uselist=False, single_parent=True)
 
-    def __init__(self, entrenado_id, inicio, fin, comentario):
+    def __init__(self, Id, Subject, entrenado_id, StartTime, EndTime,
+                 Description, RecurrenceRule):
+        self.Id = Id
+        self.Subject = Subject
         self.entrenado_id = entrenado_id
-        self.inicio = inicio
-        self.fin = fin
-        self.comentario = comentario
+        self.StartTime = StartTime
+        self.EndTime = EndTime
+        self.Description = Description
+        self.RecurrenceRule = RecurrenceRule
 
     def save(self):
         if not self.id:

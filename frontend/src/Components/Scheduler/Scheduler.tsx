@@ -12,148 +12,70 @@ import {
   ActionEventArgs,
 } from "@syncfusion/ej2-react-schedule";
 import axios from "axios";
-import { Ajax } from "@syncfusion/ej2-base";
-import { DataManager, UrlAdaptor } from "@syncfusion/ej2-data";
 
 export default function Agenda() {
   // Variables
   const scheduleObj = useRef<ScheduleComponent>(null);
-  const [dataManager, setDataManager] = useState<DataManager | undefined>(
-    undefined
-  );
-
-  /* const data = async () => {
-    const sesiones = await axios
-      .get("http://127.0.0.1:5000/get_sessions")
-      .then((res) => res.data)
-      .then((data) => setDataManager(data))
-      .catch(() => console.log("Veremos si funciona"));
-  }; */
-
-  /* const data: DataManager = new DataManager({
-    url: "http://127.0.0.1:5000/get_sessions", // 'controller/actions'
-    //crudUrl: "http://127.0.0.1:5000/get_sessions",
-    adaptor: new UrlAdaptor(),
-  }); */
-
-  /*dataSource: [
-    {
-      Subject: "1",
-      EndTime: new Date(2023, 9, 24, 18, 0),
-        StartTime: new Date(2023, 9, 24, 17, 0),
-      },
-      {
-        Subject: "2",
-        EndTime: new Date(2023, 10, 24, 18, 0),
-        StartTime: new Date(2023, 10, 24, 17, 0),
-      },
-      {
-        Subject: "3",
-        EndTime: new Date(2023, 10, 24, 18, 0),
-        StartTime: new Date(2023, 10, 24, 17, 0),
-      },
-      {
-        Subject: "4",
-        EndTime: new Date(2023, 10, 24, 18, 0),
-        StartTime: new Date(2023, 10, 24, 17, 0),
-      },
-      {
-        Subject: "5",
-        EndTime: new Date(2023, 10, 24, 18, 0),
-        StartTime: new Date(2023, 10, 24, 17, 0),
-      },
-      {
-        Subject: "6",
-        EndTime: new Date(2023, 10, 24, 18, 0),
-        StartTime: new Date(2023, 10, 24, 17, 0),
-      },
-      {
-        Subject: "7",
-        EndTime: new Date(2023, 10, 24, 18, 0),
-        StartTime: new Date(2023, 10, 24, 17, 0),
-      },
-      {
-        Subject: "8",
-        EndTime: new Date(2023, 10, 24, 18, 0),
-        StartTime: new Date(2023, 10, 24, 17, 0),
-      },
-      {
-        Subject: "9",
-        EndTime: new Date(2023, 10, 24, 18, 0),
-        StartTime: new Date(2023, 10, 24, 17, 0),
-      },
-      {
-        Subject: "Reunión con los compas",
-        EndTime: new Date(2023, 10, 24, 20, 30),
-        StartTime: new Date(2023, 10, 24, 17, 0),
-      },
-      {
-        Subject: "Otra reunión con los compas",
-        EndTime: new Date(2023, 10, 20, 20, 30),
-        StartTime: new Date(2023, 10, 20, 17, 0),
-      },
-    ]}
-  */
-
+  const [data, setData] = useState<object[]>([]);
+  const [dataManager, setDataManager] = useState<object[]>([]);
+  //----------------------------------------------------------------------
   const onActionComplete = async (args: ActionEventArgs) => {
-    console.log(args);
     if (args.requestType === "eventCreated") {
       const creado = args.addedRecords ? args.addedRecords[0] : null;
       const evento = {
-        subject: creado?.Subject,
-        description: creado?.Description || "",
-        inicio: creado?.StartTime,
-        fin: creado?.EndTime,
+        Id: creado?.Id,
+        Subject: creado?.Subject,
+        Description: creado?.Description || "",
+        StartTime: creado?.StartTime,
+        EndTime: creado?.EndTime,
+        RecurrenceRule: creado?.RecurrenceRule || "",
       };
-      const doc = creado?.Subject;
-      console.log(doc);
+
       await axios
         .post("http://127.0.0.1:5000/post_session", evento)
-        .then((response) => response.data)
-        .then((data: any) => console.log(data.id))
+        .then((response: any) => {
+          let loadedEvent = response.data;
+          const StartTime = new Date(loadedEvent.StartTime);
+          const EndTime = new Date(loadedEvent.EndTime);
+          loadedEvent["StartTime"] = StartTime;
+          loadedEvent["EndTime"] = EndTime;
+          data.unshift(loadedEvent);
+          setData(data);
+        })
         .catch(() => console.log("no hay API"));
 
-      await axios
-        .get("http://127.0.0.1:5000/get_one/" + doc)
-        .then((response) => response.data)
-        .then((data: any) => {
-          evento.subject = data.apodo;
-        })
-        .catch(() => console.log("no por aqui"));
-
-      console.log(dataManager);
-      console.log(evento.subject);
+      if (!data) {
+        return "no data";
+      } else {
+        loadData(data);
+      }
     }
   };
 
-  const data = async () => {
-    await axios
+  const loadData = (data: object[]) => {
+    scheduleObj.current?.saveEvent(data);
+    data.pop();
+    setData(data);
+  };
+
+  const getData = async () => {
+    var res = await axios
       .get("http://127.0.0.1:5000/get_sessions")
-      .then((res) => res.data)
-      .then((data) => setDataManager(data))
-      .catch(() => console.log("Veremos si funciona"));
+      .then((response) => {
+        return response.data;
+      });
+
+    return res;
   };
 
-  /* useEffect(() => {
-    const ajax = new Ajax("http://127.0.0.1:5000/get_sessions", "GET", false);
-    ajax.send();
-    ajax.onSuccess = function (value: DataManager) {
-      setDataManager(value);
-      console.log(DataManager);
-    };
-  }, []); */
+  useEffect(() => {
+    const res = getData();
+    res.then((datos: any) => {
+      setDataManager(datos);
+    });
+  }, []);
 
-  /* useEffect(() => {
-    let aux = 0;
-    while (aux < 1) {
-      data();
-      aux = aux + 1;
-    }
-  }); */
-
-  const eventSettings: EventSettingsModel = {
-    dataSource: dataManager,
-  };
+  const eventSettings: EventSettingsModel = { dataSource: dataManager };
 
   return (
     <div>

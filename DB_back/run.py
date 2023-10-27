@@ -21,7 +21,8 @@ class EntrenadoSchema(ma.Schema):
 
 class SesionesSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'entrenado_id', 'inicio', 'fin', 'comentario')
+        fields = ('Id', 'Subject', 'entrenado_id', 'StartTime',
+                  'EndTime', 'Description', 'RecurrenceRule')
 
 # class SesionesSchema ToDo
 
@@ -48,7 +49,19 @@ def entrenados():
         print(e)
         return ("La lista está vacía")
 
-# Retorna un entrenado
+# Retorna un entrenado por id
+
+
+@app.route('/get_one_by_id/<id>', methods=['GET'])
+def get_by_id(id):
+    entrenado = db.session.get(Entrenado, id)
+    if (entrenado):
+        print('BE: get by id:', entrenado_schema.jsonify(entrenado))
+        return entrenado_schema.jsonify(entrenado)
+    else:
+        return 'No encuentra por id'
+
+# Retorna un entrenado por id
 
 
 @app.route('/get_one/<doc>', methods=['GET'])
@@ -56,11 +69,7 @@ def get_by_dni(doc):
     print(type(doc), doc)
     entrenado_1 = Entrenado.query.filter_by(dni=int(doc)).first()
     if entrenado_1:
-        # print(type(entrenado_1))
-        # entrenado = Entrenado.query.filter_by(dni=int(doc)).all()
-        # print(type(entrenado))
         res = entrenado_schema.dump(entrenado_1)
-        # return jsonify([entrenado_schema.dump(alumno) for alumno in entrenado])
         return jsonify(res)
     else:
         return ('No existe el alumno')
@@ -73,7 +82,7 @@ def get_id_by_dni(doc):
     try:
         entrenado = Entrenado.query.filter_by(dni=int(doc)).first()
         # print(entrenado.id)
-        return entrenado.id
+        return (entrenado.id, entrenado.apodo)
     except Exception as e:
         return e
 # Actualiza un entrenado
@@ -82,7 +91,7 @@ def get_id_by_dni(doc):
 @app.route('/put_one/<doc>', methods=['PUT'])
 def put_one(doc):
     try:
-        id = get_id_by_dni(doc)
+        id,  _ = get_id_by_dni(doc)
         entrenado_1 = db.session.get(Entrenado, id)
         # print("1:", entrenado_1)
         # print("2:", entrenado_1.apodo)
@@ -113,14 +122,14 @@ def put_one(doc):
 
 @app.route('/delete_one/<doc>', methods=['DELETE'])
 def borrar_uno(doc):
-    id = get_id_by_dni(doc)
+    id, _ = get_id_by_dni(doc)
     if id:
         try:
-            print("0")
-            Entrenado.query.filter_by(dni=int(doc)).delete()
-            print("1")
+            # print("0")
+            Entrenado.query.filter_by(id=id).delete()
+            # print("1")
             db.session.commit()
-            print("2")
+            # print("2")
             return ("Borrado con éxito")
         except:
             return ("No se puede eliminar")
@@ -149,7 +158,6 @@ def nuevo_entrenado():
 
         new_ent = Entrenado(nombre, apellido, apodo, dni, fecha_nacimiento, grupo_sanguineo,
                             antecedentes_salud, talle, direccion, telefono, correo, es_activo, pago)
-        print(new_ent)
 
         db.session.add(new_ent)
         db.session.commit()
@@ -165,30 +173,34 @@ def nuevo_entrenado():
 @app.route('/get_sessions')
 def sesiones():
     sessions = Sesiones.query.all()
-    res = entrenados_schema.dump(sessions)
-    print(jsonify(res))
+    res = sesions_schema.dump(sessions)
     return jsonify(res)
 
 
 @app.route('/post_session', methods=['POST'])
 def nueva_sesion():
 
-    doc = request.json['subject']
-    id_entrenado = get_id_by_dni(doc)
+    doc = request.json['Subject']
+    id_entrenado, apodo = get_id_by_dni(doc)
     if id_entrenado:
+        # print('JSON:', request.json)
+
+        Id = request.json['Id']
+        Subject = apodo
         entrenado_id = id_entrenado
-        inicio = request.json['inicio'][:-5]
-        fin = request.json['fin'][:-5]
-        comentario = request.json['description']
+        StartTime = request.json['StartTime'][:-5]
+        EndTime = request.json['EndTime'][:-5]
+        Description = request.json['Description']
+        RecurrenceRule = request.json['RecurrenceRule']
         # Devuelve el id de sesion
-        new_ses = Sesiones(entrenado_id, inicio, fin, comentario)
-        print(new_ses)
+        new_ses = Sesiones(Id, Subject, entrenado_id, StartTime, EndTime,
+                           Description, RecurrenceRule)
         db.session.add(new_ses)
         db.session.commit()
 
-        return entrenado_schema.jsonify(new_ses)
+        return sesion_schema.dump(new_ses)
     else:
-        return ('No se puede')
+        return 'No se puede'
 
 
 # Esta sentencia indica al app que si las tablas no existen, que las cree,

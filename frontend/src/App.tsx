@@ -2,7 +2,7 @@ import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import Agenda from "./Components/Scheduler/Scheduler";
-import Registro from "./Components/Registro";
+//import Registro from "./Components/Registro";
 //import Usuarios from "./Components/Usuarios/Usuarios";
 
 function App() {
