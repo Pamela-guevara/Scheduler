@@ -166,6 +166,7 @@ def nuevo_entrenado():
         return e
 
 # ----------------------- Rutas para la tabla de sesiones ----------------------------------------
+########################### ToDo: Hacer rutas para actualizar sesiones y borrarlas ########################
 
 # Retorna todas las sesiones
 

@@ -13,6 +13,8 @@ import {
 } from "@syncfusion/ej2-react-schedule";
 import axios from "axios";
 
+//---------------------------- ToDo: Actualizar y borrar evento ----------------------------------
+
 export default function Agenda() {
   // Variables
   const scheduleObj = useRef<ScheduleComponent>(null);
