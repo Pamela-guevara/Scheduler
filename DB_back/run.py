@@ -44,7 +44,7 @@ def entrenados():
         # print(type(trainers))
         res = entrenados_schema.dump(trainers)
         # print(jsonify(res))
-        return jsonify(res)
+        return res, 200
     except Exception as e:
         print(e)
         return ("La lista está vacía")
