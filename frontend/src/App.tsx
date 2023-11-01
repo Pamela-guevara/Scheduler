@@ -2,8 +2,8 @@ import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import Agenda from "./Components/Scheduler/Scheduler";
-//import Registro from "./Components/Registro";
-//import Usuarios from "./Components/Usuarios/Usuarios";
+import Registro from "./Components/Registro";
+import Usuarios from "./Components/Usuarios/Usuarios";
 
 function App() {
   return (
@@ -12,8 +12,8 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
       </header>
       <Agenda />
-      {/* <Registro /> */}
-      {/* <Usuarios /> */}
+      <Registro />
+      <Usuarios />
     </div>
   );
 }
