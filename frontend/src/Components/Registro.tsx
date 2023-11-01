@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Axios from "axios";
-//import { json } from "stream/consumers";
 
 const initialState = {
   nombre: "",
@@ -33,8 +32,16 @@ const Nuevo_entrenado = function () {
   };
 
   const handleOnSubmit = async (e: any) => {
+    e.preventDefault();
     alert(JSON.stringify(newTrained));
-    await Axios.post("http://127.0.0.1:5000/post_entrenados", newTrained);
+    await Axios.post("http://127.0.0.1:5000/post_entrenados", newTrained)
+      .then((res) => console.log(res.data))
+      .catch((err) => {
+        //console.log(err);
+        if (err.message === "Network Error") {
+          return alert("El usuario ya existe");
+        }
+      });
   };
 
   return (

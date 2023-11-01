@@ -93,9 +93,6 @@ def put_one(doc):
     try:
         id,  _ = get_id_by_dni(doc)
         entrenado_1 = db.session.get(Entrenado, id)
-        # print("1:", entrenado_1)
-        # print("2:", entrenado_1.apodo)
-        # print("name", name)
         entrenado_1.nombre = request.json['nombre']
         entrenado_1.apellido = request.json['apellido']
         entrenado_1.apodo = request.json['apodo']
@@ -141,29 +138,36 @@ def borrar_uno(doc):
 @app.route('/post_entrenados', methods=['POST'])
 def nuevo_entrenado():
 
-    try:
-        nombre = request.json['nombre']
-        apellido = request.json['apellido']
-        apodo = request.json['apodo']
-        dni = request.json['dni']
-        fecha_nacimiento = request.json['fecha_nacimiento']
-        grupo_sanguineo = request.json['grupo_sanguineo']
-        antecedentes_salud = request.json['antecedentes_salud']
-        talle = request.json['talle']
-        direccion = request.json['direccion']
-        telefono = request.json['telefono']
-        correo = request.json['correo']
-        es_activo = request.json['es_activo']
-        pago = request.json['pago']
+    id,  _ = get_id_by_dni(request.json['dni'])
 
-        new_ent = Entrenado(nombre, apellido, apodo, dni, fecha_nacimiento, grupo_sanguineo,
-                            antecedentes_salud, talle, direccion, telefono, correo, es_activo, pago)
+    if id:
+        raise Exception('El usuario ya existe')
+    
+    else:
 
-        db.session.add(new_ent)
-        db.session.commit()
-        return entrenado_schema.jsonify(new_ent)
-    except Exception as e:
-        return e
+        try:
+            nombre = request.json['nombre']
+            apellido = request.json['apellido']
+            apodo = request.json['apodo']
+            dni = request.json['dni']
+            fecha_nacimiento = request.json['fecha_nacimiento']
+            grupo_sanguineo = request.json['grupo_sanguineo']
+            antecedentes_salud = request.json['antecedentes_salud']
+            talle = request.json['talle']
+            direccion = request.json['direccion']
+            telefono = request.json['telefono']
+            correo = request.json['correo']
+            es_activo = request.json['es_activo']
+            pago = request.json['pago']
+
+            new_ent = Entrenado(nombre, apellido, apodo, dni, fecha_nacimiento, grupo_sanguineo,
+                                antecedentes_salud, talle, direccion, telefono, correo, es_activo, pago)
+
+            db.session.add(new_ent)
+            db.session.commit()
+            return entrenado_schema.jsonify(new_ent)
+        except Exception as e:
+            return e
 
 # ----------------------- Rutas para la tabla de sesiones ----------------------------------------
 ########################### ToDo: Hacer rutas para actualizar sesiones y borrarlas ########################

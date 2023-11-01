@@ -1,7 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy  # Importamos SQLAlchemy
 db = SQLAlchemy()  # Creamos la instancia db
+from dataclasses import dataclass
 
 
+@dataclass
 class Entrenado(db.Model):
 
     __tablename__ = "Entrenado"
@@ -50,7 +52,7 @@ class Entrenado(db.Model):
             db.session.add(self)  # agrega a la db
         db.session.commit()  # graba en la db
 
-
+@dataclass
 class Sesiones(db.Model):
     __tablename__ = "Sesiones"
     Id = db.Column(db.Integer, primary_key=True)
