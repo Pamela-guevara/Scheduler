@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
+import Navbar from "../Navbar";
 
 export default function Usuarios() {
   const [users, setUsers] = useState([]);
@@ -22,6 +23,7 @@ export default function Usuarios() {
 
   return (
     <div>
+      <div><Navbar/></div>
       <table>
         <thead>
           <tr>

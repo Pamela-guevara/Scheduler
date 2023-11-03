@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import Axios from "axios";
+import Navbar from "./Navbar";
+import styled from 'styled-components';
+import { Container } from "@mui/material";
 
 const initialState = {
   nombre: "",
@@ -45,7 +48,8 @@ const Nuevo_entrenado = function () {
   };
 
   return (
-    <div>
+    <FormContainer>
+      <div><Navbar/></div>
       <form onSubmit={handleOnSubmit}>
         <p>
           <input
@@ -204,8 +208,12 @@ const Nuevo_entrenado = function () {
         </p>
         <button>Subir</button>
       </form>
-    </div>
+    </FormContainer> 
   );
 };
 
 export default Nuevo_entrenado;
+
+const FormContainer = styled.div`
+
+`
