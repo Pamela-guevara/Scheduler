@@ -4,16 +4,20 @@ import "./App.css";
 import Agenda from "./Components/Scheduler/Scheduler";
 import Registro from "./Components/Registro";
 import Usuarios from "./Components/Usuarios/Usuarios";
+import Navbar from "./Components/Navbar";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-      </header>
-      <Agenda />
-      {/* <Registro /> */}
-      <Usuarios />
+        <BrowserRouter>        
+         <Routes>
+            <Route path="/" Component={Navbar}/>
+            <Route path="/Registro" Component={Registro}/>
+            <Route path="/Agenda" Component={Agenda}/>
+            <Route path="/Usuarios" Component={Usuarios}/>
+          </Routes>
+        </BrowserRouter>       
     </div>
   );
 }

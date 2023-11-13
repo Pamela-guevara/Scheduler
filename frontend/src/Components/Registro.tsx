@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import Axios from "axios";
+import Navbar from "./Navbar";
+import styled from 'styled-components';
+import { Container } from "@mui/material";
 
 const initialState = {
   nombre: "",
@@ -45,7 +48,8 @@ const Nuevo_entrenado = function () {
   };
 
   return (
-    <div>
+    <FormContainer>
+      <div><Navbar/></div>
       <form onSubmit={handleOnSubmit}>
         <p>
           <input
@@ -204,8 +208,35 @@ const Nuevo_entrenado = function () {
         </p>
         <button>Subir</button>
       </form>
-    </div>
+    </FormContainer> 
   );
 };
 
 export default Nuevo_entrenado;
+
+const FormContainer = styled.div`
+  form{
+    background: #ff8ad4;
+    padding: 50px 55px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2)
+    border-radius: 20%;
+    text-aling: center;
+    width: auto;
+  }
+  input{
+    padding:10px 20px;
+    border-radius: 25px;
+    margin-bottom: 20px;
+    border:2px solid white;
+    color: black;
+  }
+  button{
+    font-size: 16px;
+    padding:10px 20px;
+    border-radius: 25px;
+    color: black;
+  }
+  button:hover{
+    background-color: hotpink ;
+  }
+`
