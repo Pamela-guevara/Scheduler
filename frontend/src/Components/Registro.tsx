@@ -215,5 +215,28 @@ const Nuevo_entrenado = function () {
 export default Nuevo_entrenado;
 
 const FormContainer = styled.div`
-
+  form{
+    background: #ff8ad4;
+    padding: 50px 55px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2)
+    border-radius: 20%;
+    text-aling: center;
+    width: auto;
+  }
+  input{
+    padding:10px 20px;
+    border-radius: 25px;
+    margin-bottom: 20px;
+    border:2px solid white;
+    color: black;
+  }
+  button{
+    font-size: 16px;
+    padding:10px 20px;
+    border-radius: 25px;
+    color: black;
+  }
+  button:hover{
+    background-color: hotpink ;
+  }
 `
