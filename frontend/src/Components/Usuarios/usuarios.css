@@ -1,0 +1,15 @@
+.div-table {
+  background-color: #fab3de;
+}
+.outside-table {
+  background-color: antiquewhite;
+  padding: 100px 200px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  border-radius: 5%;
+  text-align: center;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

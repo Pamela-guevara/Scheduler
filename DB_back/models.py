@@ -22,12 +22,10 @@ class Entrenado(db.Model):
     direccion = db.Column(db.String(45), nullable=False)
     telefono = db.Column(db.String(15), nullable=False)
     correo = db.Column(db.String(45), nullable=False)
-    es_activo = db.Column(db.String(5), nullable=False)
-    pago = db.Column(db.String(5), nullable=False)
 
     def __init__(self, nombre, apellido, apodo, dni, fecha_nacimiento,
                  grupo_sanguineo, antecedentes_salud, talle, direccion,
-                 telefono, correo, es_activo, pago):
+                 telefono, correo):
         self.nombre = nombre
         self.apellido = apellido
         self.apodo = apodo
@@ -39,8 +37,7 @@ class Entrenado(db.Model):
         self.direccion = direccion
         self.telefono = telefono
         self.correo = correo
-        self.es_activo = es_activo
-        self.pago = pago
+
 
     def __repr__(self):
         return f'<Usuario {self.apodo}>'
@@ -52,7 +49,7 @@ class Entrenado(db.Model):
             db.session.add(self)  # agrega a la db
         db.session.commit()  # graba en la db
 
-@dataclass
+
 class Sesiones(db.Model):
     __tablename__ = "Sesiones"
     Id = db.Column(db.Integer, primary_key=True)

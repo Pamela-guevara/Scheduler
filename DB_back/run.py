@@ -16,7 +16,7 @@ ma = Marshmallow(app)
 class EntrenadoSchema(ma.Schema):
     class Meta:
         fields = ('id', 'nombre', 'apellido', 'apodo', 'dni', 'fecha_nacimiento', 'grupo_sanguineo',
-                        'antecedentes_salud', 'talle', 'direccion', 'telefono', 'correo', 'es_activo', 'pago')
+                        'antecedentes_salud', 'talle', 'direccion', 'telefono', 'correo')
 
 
 class SesionesSchema(ma.Schema):
@@ -81,10 +81,10 @@ def get_id_by_dni(doc):
 
     try:
         entrenado = Entrenado.query.filter_by(dni=int(doc)).first()
-        # print(entrenado.id)
+        print("linea 84:",entrenado.id)
         return (entrenado.id, entrenado.apodo)
     except Exception as e:
-        return e
+        return False
 # Actualiza un entrenado
 
 
@@ -104,8 +104,7 @@ def put_one(doc):
         entrenado_1.direccion = request.json['direccion']
         entrenado_1.telefono = request.json['telefono']
         entrenado_1.correo = request.json['correo']
-        entrenado_1.es_activo = request.json['es_activo']
-        entrenado_1.pago = request.json['pago']
+        
 
         db.session.commit()
         # print("3:", entrenado_1.grupo_sanguineo)
@@ -119,8 +118,8 @@ def put_one(doc):
 
 @app.route('/delete_one/<doc>', methods=['DELETE'])
 def borrar_uno(doc):
-    id, _ = get_id_by_dni(doc)
-    if id:
+    id, _= get_id_by_dni(doc)
+    if id != False:
         try:
             # print("0")
             Entrenado.query.filter_by(id=id).delete()
@@ -137,10 +136,12 @@ def borrar_uno(doc):
 # Graba un nuevo usuario en la db
 @app.route('/post_entrenados', methods=['POST'])
 def nuevo_entrenado():
+    print("linea 139:",get_id_by_dni(request.json['dni']))
+    print("linea 140:",request.json['dni'])
 
-    id,  _ = get_id_by_dni(request.json['dni'])
+    id = get_id_by_dni(request.json['dni'])
 
-    if id:
+    if id != False:
         raise Exception('El usuario ya existe')
     
     else:
@@ -157,11 +158,9 @@ def nuevo_entrenado():
             direccion = request.json['direccion']
             telefono = request.json['telefono']
             correo = request.json['correo']
-            es_activo = request.json['es_activo']
-            pago = request.json['pago']
 
             new_ent = Entrenado(nombre, apellido, apodo, dni, fecha_nacimiento, grupo_sanguineo,
-                                antecedentes_salud, talle, direccion, telefono, correo, es_activo, pago)
+                                antecedentes_salud, talle, direccion, telefono, correo)
 
             db.session.add(new_ent)
             db.session.commit()

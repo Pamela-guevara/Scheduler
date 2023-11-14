@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Axios from "axios";
 import Navbar from "./Navbar";
-import styled from 'styled-components';
-import { Container } from "@mui/material";
+import styled from "styled-components";
+//import { Container } from "@mui/material";
 
 const initialState = {
   nombre: "",
@@ -16,8 +16,6 @@ const initialState = {
   direccion: "",
   telefono: "",
   correo: "",
-  es_activo: "",
-  pago: true,
 };
 
 const Nuevo_entrenado = function () {
@@ -49,7 +47,9 @@ const Nuevo_entrenado = function () {
 
   return (
     <FormContainer>
-      <div><Navbar/></div>
+      <div>
+        <Navbar />
+      </div>
       <form onSubmit={handleOnSubmit}>
         <p>
           <input
@@ -162,53 +162,10 @@ const Nuevo_entrenado = function () {
             required
           />
         </p>
-        <p>
-          <input
-            type="radio"
-            id="Si"
-            name="es_activo"
-            value="Si"
-            onChange={handleInputChange}
-            required
-          />
-          <label htmlFor="Si">Si está activo</label>
-        </p>
-        <p>
-          <input
-            type="radio"
-            id="No"
-            name="es_activo"
-            value="No"
-            onChange={handleInputChange}
-            required
-          />
-          <label htmlFor="No">No esta activo</label>
-        </p>
-        <p>
-          <input
-            type="radio"
-            id="Si"
-            name="pago"
-            value="Si"
-            onChange={handleInputChange}
-            required
-          />
-          <label htmlFor="Si">Si Pago</label>
-        </p>
-        <p>
-          <input
-            type="radio"
-            id="No"
-            name="pago"
-            value="No"
-            onChange={handleInputChange}
-            required
-          />
-          <label htmlFor="No">No Pago</label>
-        </p>
+
         <button>Subir</button>
       </form>
-    </FormContainer> 
+    </FormContainer>
   );
 };
 
@@ -239,4 +196,4 @@ const FormContainer = styled.div`
   button:hover{
     background-color: hotpink ;
   }
-`
+`;
