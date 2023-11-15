@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Axios from "axios";
-import Navbar from "../Navbar";
+import Navbar from "../Navbar/Navbar";
 import UserCard from "./UserCard";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import "./usuarios.css";
 //import styled from "styled-components";
 
 export default function Usuarios() {

@@ -11,8 +11,9 @@ import {
   ViewsDirective,
   ActionEventArgs,
 } from "@syncfusion/ej2-react-schedule";
+import "./scheduler.css";
 import axios from "axios";
-import Navbar from "../Navbar";
+import Navbar from "../Navbar/Navbar";
 
 // ToDo: Actualizar y borrar evento
 
@@ -82,7 +83,9 @@ export default function Agenda() {
 
   return (
     <div>
-      <div><Navbar/></div>
+      <div className="div-nav">
+        <Navbar />
+      </div>
       <ScheduleComponent
         ref={scheduleObj}
         currentView="WorkWeek"

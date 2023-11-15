@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import Axios from "axios";
-import Navbar from "./Navbar";
+import Navbar from "./Navbar/Navbar";
 import styled from "styled-components";
-//import { Container } from "@mui/material";
 
 const initialState = {
   nombre: "",
@@ -43,6 +42,7 @@ const Nuevo_entrenado = function () {
           return alert("El usuario ya existe");
         }
       });
+    setNewTrained(initialState);
   };
 
   return (
@@ -173,7 +173,6 @@ export default Nuevo_entrenado;
 
 const FormContainer = styled.div`
   form{
-    background: #ff8ad4;
     padding: 50px 55px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2)
     border-radius: 20%;

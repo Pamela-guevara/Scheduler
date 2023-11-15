@@ -12,7 +12,7 @@ function Navbar() {
     <>
       <NavContainer>
         <h2>
-          Actitud <span>Runing</span>
+          Actitud <span>Running</span>
         </h2>
         <div className={`links ${clicked ? "active" : ""}`}>
           <Link to="/"> Home</Link>

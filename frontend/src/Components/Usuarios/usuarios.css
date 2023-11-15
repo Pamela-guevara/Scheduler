@@ -1,15 +1,22 @@
-.div-table {
-  background-color: #fab3de;
-}
-.outside-table {
+table {
   background-color: antiquewhite;
-  padding: 100px 200px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  border-style: solid;
   border-radius: 5%;
-  text-align: center;
+  border-left: 20%;
+  border-color: gray;
+  margin-top: 50px;
+  margin-left: 25%;
+  margin-right: 15%;
   width: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+}
+th {
+  color: grey;
+}
+td {
+  color: lightslategray;
+}
+button {
+  color: lightslategray;
+  border-radius: 10%;
+  border-color: aliceblue;
 }

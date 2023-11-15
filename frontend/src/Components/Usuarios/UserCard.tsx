@@ -1,6 +1,8 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
-import Navbar from "../Navbar";
+import { useLocation, useNavigate } from "react-router-dom";
+import Navbar from "../Navbar/Navbar";
+import "./UserCard.css";
+import Axios from "axios";
 
 export default function UserCard({ ...props }) {
   const location = useLocation();
@@ -17,28 +19,68 @@ export default function UserCard({ ...props }) {
     telefono,
     correo,
   } = location.state.user;
+  const navigate = useNavigate();
 
   var fecha_nac = fecha_nacimiento.slice(0, 10);
+
+  const handleDelete = async () => {
+    await Axios.delete("http://127.0.0.1:5000/delete_one/" + dni)
+      .then((res) => res.data)
+      .then((data) => alert("El usuario ha sido eliminado"));
+    navigate("/Usuarios");
+  };
 
   return (
     <div>
       <div>
         <Navbar />
       </div>
-      <h2>Información detallada</h2>
-      <ul>
-        <li>Nombre: {nombre}</li>
-        <li>Apellido: {apellido}</li>
-        <li>Apodo: {apodo}</li>
-        <li>DNI: {dni}</li>
-        <li>Fecha de Nacimiento: {fecha_nac}</li>
-        <li>Grupo Sanguíneo: {grupo_sanguineo}</li>
-        <li>Antecedentes de salud: {antecedentes_salud}</li>
-        <li>Talle: {talle}</li>
-        <li>Dirección: {direccion}</li>
-        <li>Teléfono: {telefono}</li>
-        <li>Correo electrónico: {correo}</li>
-      </ul>
+      <div className="div-list">
+        <h2>Información detallada</h2>
+        <ul>
+          <li>
+            <span>Nombre:</span> {nombre}
+          </li>
+          <li>
+            <span>Apellido:</span> {apellido}
+          </li>
+          <li>
+            <span>Apodo:</span> {apodo}
+          </li>
+          <li>
+            <span>DNI:</span> {dni}
+          </li>
+          <li>
+            <span>Fecha de Nacimiento:</span> {fecha_nac}
+          </li>
+          <li>
+            <span>Grupo Sanguíneo:</span> {grupo_sanguineo}
+          </li>
+          <li>
+            <span>Antecedentes de salud:</span> {antecedentes_salud}
+          </li>
+          <li>
+            <span>Talle:</span> {talle}
+          </li>
+          <li>
+            <span>Dirección:</span> {direccion}
+          </li>
+          <li>
+            <span>Teléfono:</span> {telefono}
+          </li>
+          <li>
+            <span>Correo electrónico:</span> {correo}
+          </li>
+          <button>Editar</button>
+          <button
+            onClick={() => {
+              handleDelete();
+            }}
+          >
+            Borrar
+          </button>
+        </ul>
+      </div>
     </div>
   );
 }
