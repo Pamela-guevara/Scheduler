@@ -62,6 +62,9 @@ class Sesiones(db.Model):
     EndTime = db.Column(db.DateTime, nullable=False)
     Description = db.Column(db.String(255), nullable=True)
     RecurrenceRule = db.Column(db.String(255), nullable=True)
+    IsAllDay = db.Column(db.String(5), nullable=True) # Necesario por la librería de Scheduler
+    RecurrenceID = db.Column(db.Integer, nullable=True)# Necesario por la librería de Scheduler
+    RecurrenceException = db.Column(db.String(255), nullable=True)# Necesario por la librería de Scheduler
 
     # Relación- Tabla, back-populates -> atributo que lo relaciona en la otra tabla
     # uselist -> Falso para que no arme una lista con ella pues es solo un elemento
@@ -69,7 +72,7 @@ class Sesiones(db.Model):
         "Entrenado", back_populates="sesiones", uselist=False, single_parent=True)
 
     def __init__(self, Id, Subject, entrenado_id, StartTime, EndTime,
-                 Description, RecurrenceRule):
+                 Description, RecurrenceRule, IsAllDay, RecurrenceID, RecurrenceException):
         self.Id = Id
         self.Subject = Subject
         self.entrenado_id = entrenado_id
@@ -77,6 +80,10 @@ class Sesiones(db.Model):
         self.EndTime = EndTime
         self.Description = Description
         self.RecurrenceRule = RecurrenceRule
+        self.IsAllDay = IsAllDay
+        self.RecurrenceID = RecurrenceID
+        self.RecurrenceException = RecurrenceException
+        
 
     def save(self):
         if not self.id:

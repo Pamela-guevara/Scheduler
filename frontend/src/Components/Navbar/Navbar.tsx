@@ -33,6 +33,7 @@ export default Navbar;
 
 const NavContainer = styled.nav`
   h2 {
+    margin-left: 2%;
     color: white;
     font-weight: 400;
     z-index: 1000;

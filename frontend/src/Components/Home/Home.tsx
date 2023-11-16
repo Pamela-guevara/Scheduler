@@ -11,7 +11,7 @@ export default function Home() {
       </div>
       <div>
         {/* <img src="https://drive.google.com/file/d/16ZPWrvLllQEY5gsZE3dFFyDMn9uiUhfS/view?usp=sharing" /> */}
-        <img src={portait_1} />
+        <img src={portait_1} alt="" />
         <h1>Actitud Running</h1>
       </div>
     </div>

@@ -22,9 +22,7 @@ class EntrenadoSchema(ma.Schema):
 class SesionesSchema(ma.Schema):
     class Meta:
         fields = ('Id', 'Subject', 'entrenado_id', 'StartTime',
-                  'EndTime', 'Description', 'RecurrenceRule')
-
-# class SesionesSchema ToDo
+                  'EndTime', 'Description', 'RecurrenceRule', 'IsAllDay', 'RecurrenceID', 'RecurrenceException')
 
 
 entrenado_schema = EntrenadoSchema()
@@ -81,7 +79,6 @@ def get_id_by_dni(doc):
 
     try:
         entrenado = Entrenado.query.filter_by(dni=int(doc)).first()
-        print("linea 84:",entrenado.id)
         return (entrenado.id, entrenado.apodo)
     except Exception as e:
         return False
@@ -173,6 +170,13 @@ def nuevo_entrenado():
 
 # Retorna todas las sesiones
 
+def get_by_nick(nick:str):
+    try:
+        entrenado = Entrenado.query.filter_by(apodo=nick).first()
+        return entrenado.id
+    except Exception as e:
+        return False
+
 
 @app.route('/get_sessions')
 def sesiones():
@@ -183,29 +187,108 @@ def sesiones():
 
 @app.route('/post_session', methods=['POST'])
 def nueva_sesion():
+    print(request.json)
+    try:
+        if type(int(request.json['Subject'])) == int:
+            doc = request.json['Subject']
+            id_entrenado, apodo = get_id_by_dni(doc)
+            if id_entrenado:
+                
+                Id = request.json['Id']
+                Subject = apodo
+                entrenado_id = id_entrenado
+                StartTime = request.json['StartTime'][:-5]
+                EndTime = request.json['EndTime'][:-5]
+                Description = request.json['Description']
+                RecurrenceRule = request.json['RecurrenceRule']
+                IsAllDay = request.json['IsAllDay']
+                RecurrenceID = request.json['RecurrenceID']
+                RecurrenceException = request.json['RecurrenceException']
+                # Devuelve el id de sesion
+                new_ses = Sesiones(Id, Subject, entrenado_id, StartTime, EndTime,
+                                Description, RecurrenceRule, IsAllDay, RecurrenceID, RecurrenceException)
+                db.session.add(new_ses)
+                db.session.commit()
 
-    doc = request.json['Subject']
-    id_entrenado, apodo = get_id_by_dni(doc)
-    if id_entrenado:
-        # print('JSON:', request.json)
+                return sesion_schema.dump(new_ses)
+            else:
+                return 'No se puede'
+    
+    except:
+        if type(request.json['Subject']) == str:  
+            id_entrenado = get_by_nick(request.json['Subject'])
+            try:
+                Id = request.json['Id']
+                Subject = request.json['Subject']
+                entrenado_id = id_entrenado
+                StartTime = request.json['StartTime'][:-5]
+                EndTime = request.json['EndTime'][:-5]
+                Description = request.json['Description']
+                RecurrenceRule = request.json['RecurrenceRule']
+                IsAllDay = request.json['IsAllDay']
+                RecurrenceID = request.json['RecurrenceID']
+                RecurrenceException = request.json['RecurrenceException']
+                    # Devuelve el id de sesion
+                new_ses = Sesiones(Id, Subject, entrenado_id, StartTime, EndTime,
+                                    Description, RecurrenceRule, IsAllDay, RecurrenceID, RecurrenceException)
+                db.session.add(new_ses)
+                db.session.commit()
+                return sesion_schema.dump(new_ses)
+            except:
+                return 'No se puede actualizar la sesión existente solicitada'
+    
+    #ToDo : Hacer edit sesiones y delete sesiones
+@app.route('/delete_session', methods=['DELETE'])
+def delete_session():
+    # Borra un evento que no es recurrente o toda la recurrencia de un mismo evento
+    if request.json['Type'] == "Single":    
+        id = request.json['Id']
+        try:
+            Sesiones.query.filter_by(Id=id).delete()
+            db.session.commit()
+            return ("Sesión borrada con éxito")
+        except:
+            return ("No se puede eliminar la sesión")
+    #elif request.json['Type'] == "Recurrence":
 
-        Id = request.json['Id']
-        Subject = apodo
-        entrenado_id = id_entrenado
-        StartTime = request.json['StartTime'][:-5]
-        EndTime = request.json['EndTime'][:-5]
-        Description = request.json['Description']
-        RecurrenceRule = request.json['RecurrenceRule']
-        # Devuelve el id de sesion
-        new_ses = Sesiones(Id, Subject, entrenado_id, StartTime, EndTime,
-                           Description, RecurrenceRule)
-        db.session.add(new_ses)
-        db.session.commit()
+@app.route('/put_session', methods=['PUT'])
+def put_session():
 
-        return sesion_schema.dump(new_ses)
-    else:
-        return 'No se puede'
+    Id = request.json['Id']
+    recurrence = request.json['RecurrenceException']
+    
+    if request.json['Type'] == "Recurrence":  # Para eliminar solo una sesión de una serie
+        
+        try:
+            session_1 = db.session.get(Sesiones, Id)
+            session_1.RecurrenceException = recurrence
+            db.session.commit()
+            return sesion_schema.jsonify(session_1)
+        except:
+            return("No se pudo actualizar el registro")
+        
+    elif request.json['Type'] == "Modify":  # Para modificar uno dentro de una serie
+        try:
+            session_2 = db.session.get(Sesiones, Id)
+            print("lnea 273", session_2)
+            session_2.StartTime = request.json['StartTime'][:-5]
+            print("lnea 275")
+            session_2.EndTime = request.json['EndTime'][:-5]
+            print("lnea 277")
+            session_2.Description = request.json['Description']
+            print("lnea 279")
+            session_2.RecurrenceRule = request.json['RecurrenceRule']
+            print("lnea 281")
+            db.session.commit()
+            print("279:",sesion_schema.jsonify(session_2))
+            return sesion_schema.jsonify(session_2)
+        except:
+            return ("No se pudo modificar el evento de la serie")
 
+
+
+
+   
 
 # Esta sentencia indica al app que si las tablas no existen, que las cree,
 # sino continua con su ejecución normal
