@@ -1,15 +1,43 @@
-.card-body {
-  background-color: aliceblue;
+.div-list {
+  background-color: antiquewhite;
+  border-style: solid;
+  border-radius: 5%;
+  border-left: 20%;
+  border-color: gray;
+  margin-top: 50px;
+  margin-left: 25%;
+  margin-right: 15%;
+  width: 50%;
 }
-.card-title {
-  color: #ff33ab;
+h2 {
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
-.card-text {
-  color: rgb(237, 109, 131);
+ul {
+  list-style-type: none;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  margin-left: 8%;
+  margin-right: 8%;
+  padding: 10px;
 }
-.card-subtitle {
-  color: black;
+span {
+  font-size: 1.2em;
+  font-weight: bold;
 }
-.card-text {
-  color: grey;
+li {
+  line-height: 2em;
+  font-size: 1em;
+  word-spacing: 0.25em;
+}
+button {
+  margin-top: 10px;
+  margin-left: 25px;
+  font-size: 13px;
+  padding: 10px;
+  border-radius: 25px;
+  color: gray;
+}
+button:hover {
+  background-color: rgb(244, 158, 201);
 }

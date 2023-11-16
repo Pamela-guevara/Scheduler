@@ -1,61 +1,86 @@
-import * as React from "react";
-/* import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import Navbar from "../Navbar/Navbar";
 import "./UserCard.css";
+import Axios from "axios";
 
-export default function BasicCard(props) {
-  /* return (
-    <Card sx={{ minWidth: 275 }}>
-      <CardContent>
-        <Typography variant="h5" component="div">
-          ${props.nombre}, ${props.apellido}
-        </Typography>
-        <Typography sx={{ mb: 1.5 }}>
-          <br />
-          {props.apodo}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          DNI: {props.dni}, Fecha de nacimiento: {props.fecha_nacimiento},
-          Dirección: {props.fecha_nacimiento}, Teléfono: {props.telefono},
-          Email: {props.correo}, Grupo sanguíneo: {props.grupo_sanguineo},
-          Talla: {props.talle},
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button size="small">Learn More</Button>
-      </CardActions>
-    </Card>
-  ); */
-//return (
-{
-  /*<div class="card" style="width: 18rem;">
-      <div class="card-body">
-        <h5 class="card-title">
-          Card title: {props.nombre},{props.apellido}
-        </h5>
-        <h6 class="card-subtitle mb-2 text-muted">
-          Card subtitle, {props.apodo}
-        </h6>
-        <p class="card-text">
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content. DNI: {props.dni}, Fecha de nacimiento:{" "}
-          {props.fecha_nacimiento}, Dirección: {props.fecha_nacimiento},
-          Teléfono: {props.telefono}, Email: {props.correo}, Grupo sanguíneo:{" "}
-          {props.grupo_sanguineo}, Talla: {props.talle}
-        </p>
-        <a href="#" class="card-link">
-          Card link
-        </a>
-        <a href="#" class="card-link">
-          Another link
-        </a>
+export default function UserCard({ ...props }) {
+  const location = useLocation();
+  const {
+    nombre,
+    apellido,
+    apodo,
+    dni,
+    fecha_nacimiento,
+    grupo_sanguineo,
+    antecedentes_salud,
+    talle,
+    direccion,
+    telefono,
+    correo,
+  } = location.state.user;
+  const navigate = useNavigate();
+
+  var fecha_nac = fecha_nacimiento.slice(0, 10);
+
+  const handleDelete = async () => {
+    await Axios.delete("http://127.0.0.1:5000/delete_one/" + dni)
+      .then((res) => res.data)
+      .then((data) => alert("El usuario ha sido eliminado"));
+    navigate("/Usuarios");
+  };
+
+  return (
+    <div>
+      <div>
+        <Navbar />
+      </div>
+      <div className="div-list">
+        <h2>Información detallada</h2>
+        <ul>
+          <li>
+            <span>Nombre:</span> {nombre}
+          </li>
+          <li>
+            <span>Apellido:</span> {apellido}
+          </li>
+          <li>
+            <span>Apodo:</span> {apodo}
+          </li>
+          <li>
+            <span>DNI:</span> {dni}
+          </li>
+          <li>
+            <span>Fecha de Nacimiento:</span> {fecha_nac}
+          </li>
+          <li>
+            <span>Grupo Sanguíneo:</span> {grupo_sanguineo}
+          </li>
+          <li>
+            <span>Antecedentes de salud:</span> {antecedentes_salud}
+          </li>
+          <li>
+            <span>Talle:</span> {talle}
+          </li>
+          <li>
+            <span>Dirección:</span> {direccion}
+          </li>
+          <li>
+            <span>Teléfono:</span> {telefono}
+          </li>
+          <li>
+            <span>Correo electrónico:</span> {correo}
+          </li>
+          <button>Editar</button>
+          <button
+            onClick={() => {
+              handleDelete();
+            }}
+          >
+            Borrar
+          </button>
+        </ul>
       </div>
     </div>
   );
-}
-*/
 }
