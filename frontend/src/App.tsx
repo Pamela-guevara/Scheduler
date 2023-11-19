@@ -1,14 +1,13 @@
 import React from "react";
 import "./App.css";
 import Agenda from "./Components/Scheduler/Scheduler";
-import Registro from "./Components/Registro";
+import Registro from "./Components/Usuarios/Registro";
 import Usuarios from "./Components/Usuarios/Usuarios";
 import Navbar from "./Components/Navbar/Navbar";
 import UserCard from "./Components/Usuarios/UserCard";
 import Home from "./Components/Home/Home";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Editar from "./Components/Editar";
-
+import Editar from "./Components/Usuarios/Editar";
 
 function App() {
   return (
@@ -21,7 +20,7 @@ function App() {
           <Route path="/Agenda" Component={Agenda} />
           <Route path="/Usuarios" Component={Usuarios} />
           <Route path="/usuario" Component={UserCard} />
-          <Route path="/Edit"  Component={Editar} />
+          <Route path="/Edit" Component={Editar} />
         </Routes>
       </BrowserRouter>
     </div>

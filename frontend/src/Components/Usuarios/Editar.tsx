@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Navbar from "./Navbar/Navbar";
+import Navbar from "../Navbar/Navbar";
 import styled from "styled-components";
 import Axios from "axios";
 
@@ -27,7 +27,7 @@ const Editar = () => {
     }
   }, [location.state]);
 
-  const handleInputChange = (e:any) => {
+  const handleInputChange = (e: any) => {
     const { name, value } = e.target;
     setEditedUser({
       ...editedUser,
@@ -35,19 +35,19 @@ const Editar = () => {
     });
   };
 
-  const handleSubmit = (e:any) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
-     Axios.put("http://127.0.0.1:5000/put_one/" + editedUser.dni, editedUser)
-       .then((res) => console.log(res.data))
-       .catch((err) => console.error(err));
-    navigate("/usuarios", {state: {editedUser}});
-    
+    Axios.put("http://127.0.0.1:5000/put_one/" + editedUser.dni, editedUser)
+      .then((res) => console.log(res.data))
+      .catch((err) => console.error(err));
+    navigate("/usuarios", { state: { editedUser } });
+
     setEditedUser({
       nombre: "",
       apellido: "",
       apodo: "",
       dni: "",
-      fecha_nacimiento:"",
+      fecha_nacimiento: "",
       grupo_sanguineo: "",
       antecedentes_salud: "",
       talle: "",
@@ -63,7 +63,7 @@ const Editar = () => {
         <Navbar />
       </div>
       <form onSubmit={handleSubmit}>
-      <p>
+        <p>
           <input
             placeholder="Nombre"
             type="text"
@@ -109,7 +109,7 @@ const Editar = () => {
             placeholder="Fecha de nacimiento"
             type="date"
             name="fecha_nacimiento"
-            value={editedUser.fecha_nacimiento.split('T')[0]}
+            value={editedUser.fecha_nacimiento.split("T")[0]}
             onChange={handleInputChange}
             required
           />

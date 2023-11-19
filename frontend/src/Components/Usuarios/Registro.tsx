@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Axios from "axios";
-import Navbar from "./Navbar/Navbar";
+import Navbar from "../Navbar/Navbar";
 import styled from "styled-components";
 
 const initialState = {
