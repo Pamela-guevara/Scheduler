@@ -7,6 +7,8 @@ import Navbar from "./Components/Navbar/Navbar";
 import UserCard from "./Components/Usuarios/UserCard";
 import Home from "./Components/Home/Home";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Editar from "./Components/Editar";
+
 
 function App() {
   return (
@@ -19,6 +21,7 @@ function App() {
           <Route path="/Agenda" Component={Agenda} />
           <Route path="/Usuarios" Component={Usuarios} />
           <Route path="/usuario" Component={UserCard} />
+          <Route path="/Edit"  Component={Editar} />
         </Routes>
       </BrowserRouter>
     </div>
