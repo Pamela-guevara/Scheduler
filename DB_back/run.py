@@ -87,24 +87,25 @@ def get_id_by_dni(doc):
 
 @app.route('/put_one/<doc>', methods=['PUT'])
 def put_one(doc):
+    request_json = request.get_json()
+    print(request.json['apodo'])
+    print("aquí")
     try:
-        id,  _ = get_id_by_dni(doc)
-        entrenado_1 = db.session.get(Entrenado, id)
-        entrenado_1.nombre = request.json['nombre']
-        entrenado_1.apellido = request.json['apellido']
-        entrenado_1.apodo = request.json['apodo']
-        entrenado_1.dni = request.json['dni']
-        entrenado_1.fecha_nacimiento = request.json['fecha_nacimiento']
-        entrenado_1.grupo_sanguineo = request.json['grupo_sanguineo']
-        entrenado_1.antecedentes_salud = request.json['antecedentes_salud']
-        entrenado_1.talle = request.json['talle']
-        entrenado_1.direccion = request.json['direccion']
-        entrenado_1.telefono = request.json['telefono']
-        entrenado_1.correo = request.json['correo']
+        id = get_id_by_dni(doc)  
+        entrenado_1= db.session.get(Entrenado, id[0])
+        entrenado_1.nombre= request_json['nombre']
+        entrenado_1.apellido=request_json['apellido']
+        entrenado_1.apodo=request_json['apodo']
+        entrenado_1.dni=request_json['dni']
+        entrenado_1.fecha_nacimiento=request_json['fecha_nacimiento']
+        entrenado_1.grupo_sanguineo= request_json['grupo_sanguineo']
+        entrenado_1.antecedentes_salud = request_json['antecedentes_salud']
+        entrenado_1.talle = request_json['talle']
+        entrenado_1.direccion = request_json['direccion']
+        entrenado_1.telefono = request_json['telefono']
+        entrenado_1.correo = request_json['correo']
         
-
         db.session.commit()
-        # print("3:", entrenado_1.grupo_sanguineo)
         return entrenado_schema.jsonify(entrenado_1)
 
     except:

@@ -29,6 +29,15 @@ export default function UserCard({ ...props }) {
       .then((data) => alert("El usuario ha sido eliminado"));
     navigate("/Usuarios");
   };
+  
+
+  
+  const handleEdit = async () => {
+    navigate("/Edit", {state:{editingUser: location.state.user}});
+  };
+
+  
+  
 
   return (
     <div>
@@ -71,7 +80,7 @@ export default function UserCard({ ...props }) {
           <li>
             <span>Correo electrónico:</span> {correo}
           </li>
-          <button>Editar</button>
+          <button onClick={handleEdit}>Editar</button>
           <button
             onClick={() => {
               handleDelete();
